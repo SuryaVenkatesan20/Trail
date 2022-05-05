@@ -7,4 +7,5 @@ Learning Phase
 
 ![Image2](./Practice/Images/download.png)
 
-<img src="./Practice/Images/0_4PwwIN0qfI9IF0Pk.png" width="80%"> 
+![Image3](./Practice/Images/0_4PwwIN0qfI9IF0Pk.png)
+
