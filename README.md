@@ -5,6 +5,11 @@ Learning Phase
 
 ![Image1](./Practice/Images/download.jpg =80%x5em)
 
+![Image1](./Practice/Images/download.jpg =100x80)
+
+![Image1](./Practice/Images/download.jpg =100x*)
+
+
 ![Image2](./Practice/Images/download.png)
 
 ![Image3](./Practice/Images/0_4PwwIN0qfI9IF0Pk.png)
