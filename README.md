@@ -5,6 +5,6 @@ Learning Phase
 
 ![Image1](./Practice/Images/download.jpg)
 
-![Image2](/Images/UI5_logo_wide.png)
+![Image2](./Practice/Images/download.png)
 
-<img src="/Images/tools_810111.png" width="80%"> 
+<img src="./Practice/Images/0_4PwwIN0qfI9IF0Pk.png" width="80%"> 
