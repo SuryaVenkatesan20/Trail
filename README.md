@@ -3,6 +3,8 @@
 ## Learning Phase
 
 http://<IP of your SAP CAL backend>:8443/
+  
+ http://\<IP of your SAP CAL backend\>:8443/.
 
 
 
