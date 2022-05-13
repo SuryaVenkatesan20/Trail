@@ -33,7 +33,6 @@ With just one contract, you can get access to all services available under CPEA 
 
 Contact your SAP sales representative for more information.
 
-![btp commercial prerequisite](images/btp_commercial_prereq.png)
 
 For more information, see:
 
