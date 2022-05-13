@@ -24,7 +24,7 @@ For more information, see:
  [SAP Store – SAP Business Technology Platform Category](https://store.sap.com/dcp/en/categories/try-and-buy-sap-business-technology-platform-apps-and-software)
  
 
-## Cloud Platform Enterprise Agreement (CPEA)
+ ## Cloud Platform Enterprise Agreement (CPEA)
 
 This model allows for the consumption of cloud credits based on actual usage with the highest flexibility.
 
