@@ -6,7 +6,7 @@ http://\<IP of your SAP CAL backend>:8443/.
 
 \>
 
-\<Surya>
+\<Messi>
 
 Image_1_Surya
 
