@@ -1,3 +1,13 @@
+**Hint:** You can skip the installation of Cloud connector, if you are using a SAP Cloud Appliance Library S/4HANA demo backend system which you set up following the steps in [Setup SAP S/4HANA system in SAP CAL](../cal-setup/CALS4H.md). There is a Cloud Connector pre-installed and ready to be used. Check the **Welcome page** in your CAL system for the links, it usually runs in http://\<IP of your SAP CAL backend\>:8443/.
+
+http://<IP of your SAP CAL backend\>:8443/.
+
+
+
+
+
+
+
 ## Prerequisite
 
 SAP Task Center is available using Free Tier, Cloud Platform Enterprise Agreement (**CPEA**) and Pay-As-You-Go. Please ensure that your SAP Business Technology Platform account belongs to one of these commercial models.
