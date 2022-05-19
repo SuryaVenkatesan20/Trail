@@ -42,6 +42,7 @@ See [User Management with the SAP HANA Database Administrator DBADMIN](https://h
 The following steps describe how to create an user **EFADMIN**.
 
 >*Hint:* If you would like to share the SAP HANA Database, but would like to have your own independent access, you can create your own database admin and use this instead.
+
 1. To open the **SAP HANA Database Explorer**, choose the `...` and then choose **Open the SAP HANA Database Explorer**.
 
    ![](images/openSAPHANADataExplorer2.png)
