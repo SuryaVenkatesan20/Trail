@@ -10,7 +10,15 @@ Issue One
             entity Customers as projection on my.Customers;
         }
 
+<pre data-line="" class=" line-numbers  language-js"><code class="  language-js">using <span class="token punctuation">{</span> sap<span class="token punctuation">.</span>capire<span class="token punctuation">.</span>incidents <span class="token keyword">as</span> my <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../db/schema'</span><span class="token punctuation">;</span>
 
+service ProcessorService <span class="token punctuation">{</span> 
+    entity Incidents <span class="token keyword">as</span> projection on my<span class="token punctuation">.</span>Incidents<span class="token punctuation">;</span>
+
+    @readonly
+    entity Customers <span class="token keyword">as</span> projection on my<span class="token punctuation">.</span>Customers<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
