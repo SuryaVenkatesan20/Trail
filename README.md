@@ -1,6 +1,7 @@
 
 Issue One
 
+<pre><code>
 using { sap.capire.incidents as my } from '../db/schema';
 
 service ProcessorService { 
@@ -9,7 +10,7 @@ service ProcessorService {
     @readonly
     entity Customers as projection on my.Customers;
 }
-
+<pre><code>
 
 
 
