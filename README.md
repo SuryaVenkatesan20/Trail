@@ -1,15 +1,6 @@
 
 Issue One
 
-
-    using { sap.capire.incidents as my } from '../db/schema';
-        service ProcessorService { 
-            entity Incidents as projection on my.Incidents;
-    
-            @readonly
-            entity Customers as projection on my.Customers;
-        }
-
 <pre data-line="" class=" line-numbers  language-js"><code class="  language-js">using <span class="token punctuation">{</span> sap<span class="token punctuation">.</span>capire<span class="token punctuation">.</span>incidents <span class="token keyword">as</span> my <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../db/schema'</span><span class="token punctuation">;</span>
 
 service ProcessorService <span class="token punctuation">{</span> 
