@@ -1,16 +1,17 @@
 
 Issue One
 
-<pre><code>
-using { sap.capire.incidents as my } from '../db/schema';
 
-service ProcessorService { 
-    entity Incidents as projection on my.Incidents;
+using { 
+    sap.capire.incidents as my } from '../db/schema';
 
-    @readonly
-    entity Customers as projection on my.Customers;
-}
-<pre><code>
+    service ProcessorService { 
+        entity Incidents as projection on my.Incidents;
+
+        @readonly
+        entity Customers as projection on my.Customers;
+    }
+
 
 
 
