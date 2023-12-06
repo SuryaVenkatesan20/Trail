@@ -1,27 +1,4 @@
-Check if the module `incident-management-destination-content` in `mta.yaml` looks like this:
-    ```yaml
-    - name: incident-management-destination-content
-      type: com.sap.application.content
-      requires:
-        - name: incident-management-destination-service
-          parameters:
-            content-target: true
-        - name: incident-management_html_repo_host
-          parameters:
-            service-key:
-              name: incident-management_html_repo_host-key
-        parameters:
-          content:
-            instance:
-              destinations:
-              - Name: incidents_incidents_management_html_repo_host
-                ServiceInstanceName: incident-management-html5-app-host-service
-                ServiceKeyName: incident-management_html_repo_host-key
-                sap.cloud.service: incidents
-              existing_destinations_policy: ignore
-        build-parameters:
-          no-source: true
-    ```
+
 - Update `incident-management-srv-api` in `incident-management-destination-service`
 
     - Add `HTML5.IASDependencyName: incidents-api`
