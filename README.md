@@ -9,62 +9,15 @@ Prepare your sample for deploying on Cloud Foundry: [Prerequisite-for-sample](./
 
  1. Create `ias-config.json` file in your project root folder with the following content and replace the ```<unique-id>``` with a unique value to identify your IAS app in IAS Tenant:
 
-    ```json
-        {
-          
-            "authorization": {
-              "enabled":true
-            },
-            "provided-apis": [
-                {
-                  "name": "incidents-api",
-                  "description": "api exposed by incident mgmt app"
-                }
-              ],
-            "display-name": "incident-ias-<unique-id>"
-        }
-    ```
 
 2. Check if the following dependencies and dev dependencies have been added to the `package.json`:
 
 
     <!-- cpes-file package.json:$.cds.requires -->
-    ```json
-    {
-        ...
-        "dependencies": {
-        "@sap/ams": "^1.13.0",
-        "@sap/cds": "^7.0",
-        "@sap/xssec": "^3.3.5",
-        "hdb": "^0.19.0",
-        "passport": "^0"
-      },
-      "devDependencies": {
-        "@sap/ams-dev": "^0.7.0",
-        "@sap/cds-dk": "^7"
-      },
-
-    ...
-    }
-    ```
+   
 3. Change the `auth.kind` to `ias` in `package.json` for the production profile:
 
-      ```json
-      {    
-          ...
-        "cds": {
-          "requires": {
-            "[production]": {
-              ...
-              "auth": {
-                "kind": "ias"
-                ...
-              }
-            }
-          }
-        }
-      }
-    ```
+     
 
 ## Deploy on Cloud Foundry
 
