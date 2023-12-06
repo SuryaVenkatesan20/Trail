@@ -11,17 +11,16 @@ Prepare your sample for deploying on Cloud Foundry: [Prerequisite-for-sample](./
 
     ```json hl_lines="7-9"
         {
-          
-            "authorization": {
-              "enabled":true
-            },
-            "provided-apis": [
-                {
-                  "name": "incidents-api",
-                  "description": "api exposed by incident mgmt app"
-                }
-              ],
-            "display-name": "incident-ias-<unique-id>"
+           "authorization": {
+             "enabled":true
+           },
+           "provided-apis": [
+               {
+                 "name": "incidents-api",
+                 "description": "api exposed by incident mgmt app"
+               }
+             ],
+           "display-name": "incident-ias-<unique-id>"
         }
     ```
 
