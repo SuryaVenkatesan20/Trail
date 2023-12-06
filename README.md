@@ -9,7 +9,7 @@ Prepare your sample for deploying on Cloud Foundry: [Prerequisite-for-sample](./
 
  1. Create `ias-config.json` file in your project root folder with the following content and replace the ```<unique-id>``` with a unique value to identify your IAS app in IAS Tenant:
 
-   ```json
+    ```json
         {
           
             "authorization": {
