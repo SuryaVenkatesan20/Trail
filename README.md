@@ -1,321 +1,315 @@
 ---
 parser: v2
 auto_validation: true
+primary_tag: software-product-function>sap-s-4hana-cloud--abap-environment
+tags:  [ tutorial>beginner,software-product-function>sap-s-4hana-cloud--abap-environment, programming-tool>abap-development, programming-tool>abap-extensibility]
 time: 25
-tags: [ tutorial>beginner, programming-tool>sapui5, software-product>sap-fiori, software-product>sap-business-technology-platform, software-product>sap-btp--cloud-foundry-environment]
-primary_tag: software-product>sap-business-application-studio
-author_name: Raz Korn
-author_profile: https://github.com/raz-korn
+author_name: Merve Temel
+author_profile: https://github.com/mervey45
 ---
+ 
+# Create a Shopping Cart Business Object
+<!-- description --> Create a shopping cart business object with SAP S/4HANA Cloud, ABAP Environment or SAP S/4HANA on-premise.
 
-# Create an SAP Fiori App Using SAP Business Application Studio
-<!-- description --> Develop a simple SAPUI5 freestyle application, adhering to SAP Fiori design guidelines, that will present a list of suppliers from an on-premise backend.
+ 
+## Prerequisites  
+- This tutorial can be used in the SAP S/4HANA Public Cloud. This tutorial can also be used in both SAP S/4HANA Cloud, private edition system and SAP S/4HANA on-premise system with release 2022 FPS01, in which case you will need to import the [SAP Note 3330593](https://launchpad.support.sap.com/#/notes/3330593) and [SAP Note 3280851](https://me.sap.com/notes/3280851) in your system. We suggest using a [Fully-Activated Appliance] (https://blogs.sap.com/2018/12/12/sap-s4hana-fully-activated-appliance-create-your-sap-s4hana-1809-system-in-a-fraction-of-the-usual-setup-time/) in SAP Cloud Appliance Library for an easy start without the need for system setup.
+- For SAP S/4HANA on-premise, create developer user with full development authorization 
+- You have installed the latest [Eclipse with ADT](abap-install-adt).
+- Use Starter Development Tenant in S/4HANA Cloud for the tutorial to have necessary sample data in place. See [3-System Landscape and Transport Management](https://help.sap.com/docs/SAP_S4HANA_CLOUD/a630d57fc5004c6383e7a81efee7a8bb/e022623ec1fc4d61abb398e411670200.html?state=DRAFT&version=2208.503).
+- Business role `SAP_BR_PURCHASER` needs to be assigned to your business user
+- In case the CAL instance is not used, please set up for developer extensibility to get `ZLOCAL` package.
+ - Create software component for local cloud-ready development with `ZLOCAL`
+ - Create a structure package with `ZLOCAL`
+- You are already logged into SAP S/4HANA Cloud, ABAP Environment or SAP S/4HANA on-Premise. If not, please complete the [login tutorial](abap-s4hanacloud-login).
 
-## Prerequisites
-  - You have created an SAP Fiori dev space in SAP Business Application Studio. See [Create a preconfigured dev space for developing SAP Fiori apps](appstudio-devspace-fiori-create).
-  - The SAP Fiori dev space is in status `RUNNING` and you opened it.
-  - You configured a destination to SAP Gateway Demo System (ES5) (see [Connect SAP BTP to Your SAP Gateway Demo System Account (ES5)](cp-portal-cloud-foundry-gateway-connection)).
-
-
-## You will learn
-  - How to create an SAPUI5 application for SAP BTP, Cloud Foundry environment
-  - How to test-run the app locally in the dev space
-
+## You will learn  
+- How to create an ABAP package
+- How to create a database table
+- How to create transactional UI services
+- How to enhance the behavior definition of a data model 
+- How to publish a service binding
+- How to run the SAP Fiori Elements Preview
+ 
 ## Intro
-You'll build an application that presents a list of suppliers from an on-premise backend. The suppliers' data will be retrieved from the `BusinessPartnerSet` collection in the `ZGWSAMPLE_BASIC` OData service that is available from SAP's ES5 demo Gateway system.
 
-The flow consists of the following parts:
 
-1. Running a wizard that creates a multi-target application (MTA) project that is configured to use Managed Application Router. An MTA  is required in order to create the deployment artifact for SAP BTP, Cloud Foundry environment. If you are not familiar with the MTA concepts, read this [guide](https://www.sap.com/documents/2016/06/e2f618e4-757c-0010-82c7-eda71af511fa.html). A Managed Application Router is SAP's best practice for applications that run on SAP BTP as well as required in order to include the app in SAP launchpad. To learn more on Managed Application Router refer to this [guide](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/11d77aa154f64c2e83cc9652a78bb985.html).
+--- 
 
-2. Running a wizard that generates the app based on SAPUI5 Application template. The app is generated as an HTML5 module within the MTA.
+### Create ABAP package
 
-3. Enhancing the application by creating the UI and presenting data fetched from an SAP backend.
+**Hint:** In case the CAL instance is not used, please set up for developer extensibility to get `ZLOCAL` package.
+ - Create software component for local cloud-ready development with `ZLOCAL`
+ - Create a structure package with `ZLOCAL`
 
->**Important**
 
->After a period of idle time the dev space is automatically stopped. In order to re-start the dev space open the [dev space manager](https://triallink.eu10.trial.applicationstudio.cloud.sap/), click the **Play** icon, and click the dev space.
+  1.  Select **ZLOCAL** > **New** > **ABAP Package**.
 
->The period for idle time for Enterprise accounts is different than for trial accounts.
+      ![package](packagenew.png)
 
----
+  2.  Create new **ABAP package**:
+       - Name: **`Z_PURCHASE_REQ_###`**
+       - Description: Package ###
+       - Check **Add to favorite packages**
 
-### Create new Multitarget Application project
+      ![package](packagenew2.png)
 
+       Click **Next >**.
 
-1. In the left side bar, select **the hamburger icon | View | Command Palette...** to open the **command palette**.
+  3. Click **Next >**.
 
-    <!-- border -->![open command palette](BAS-Create-MTA-1-.png)
+      ![package](packagenew3.png)
 
-2. The command palette is opened at the top-center of the SAP Business Application Studio window.
 
-    <!-- border -->![command palette opened](AppStudio-Create-MTA-2-.png)
+  4.  Create a new request:
+      -  Request Description: TR12345
 
-3. Enter the **Fiori: Open CF Application Router Generator** command in the command palette.
+      ![package](packagenew4.png)
 
-    >Type `fiori: open` in the command palette text field to filter the commands.
+       Click **Finish**.
 
-    <!-- border -->![cf mta and approuter wizard](BAS-Create-MTA-3-.png)
 
-4. The **Application Router Generator Wizard** tab is opened. For **Application Router Configuration**, select the following, and click **Finish**.
+### Create database table
 
-    | Step | Parameter | Value |
-    |:-----|:----------|:------|
-    | A | Application router project path | **/home/user/projects** (default) |
-    | B | MTA ID | **`FioriDemo`** |
-    | C | MTA Description | Can be left empty (default) |
-    | D | Add route module | **Managed Approuter** |
+  1. Right-click your package `Z_PURCHASE_REQ_###` and select **New** > **Other ABAP Repository Object**.
 
-    <!-- border -->![Fill-in cf mta and approuter wizard](BAS-Create-MTA-4-.png)
+      ![table](databasenew.png)
 
-    >When end-users access an app in the Cloud Foundry environment, they actually access the Application Router first. The application router is used to serve static content, authenticate users, rewrite URLs, and forward or proxy requests to other micro services while propagating user information.
+  2. Search for **database table**, select it and click **Next >**.
 
-    >The recommendation is to use **Managed Application Router** that provides many benefits, when compared to Standalone Application Router, such as save resources, lower maintenance efforts, etc. Standalone Application Router should only be used in advanced cases, for example when application router extensibility is required. More information is available in [Developing HTML5 Applications in the Cloud Foundry Environment](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/11d77aa154f64c2e83cc9652a78bb985.html)
+      ![table](databasenew2.png)
 
-5. Wait until the creation of project is completed. A notification that "The files has been generated" appears at the bottom right of the screen.
+  3. Create new database table:
+     - Name: `ZASHOPCART_### `
+     - Description: Shopping cart table
 
-    <!-- border -->![project creation completed](BAS-Create-MTA-5-.png)
+      ![table](databasenew3.png)
 
+       Click **Next >**.
 
-### Open the project's folder
+  4. Click **Finish**.
 
+      ![table](databasenew4.png)
 
-1. In the left side bar, select **the hamburger icon | File | Open Folder...** to open the **Open Folder** dialog.
+  5. Replace your code with following:
 
-    <!-- border -->![open workspace dialog](BAS-Open-Workspace-1-.png)
+    ```ABAP
+    @EndUserText.label : 'Shopping cart table'
+    @AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+    @AbapCatalog.tableCategory : #TRANSPARENT
+    @AbapCatalog.deliveryClass : #A
+    @AbapCatalog.dataMaintenance : #RESTRICTED
+    define table zashopcart_### {
+    key client            : abap.clnt not null;
+    key order_uuid        : sysuuid_x16 not null;
+    order_id              : abap.numc(8) not null;
+    ordered_item          : abap.char(10) not null;
+    @Semantics.amount.currencyCode : 'zashopcart_###.currency'
+    price                 : abap.curr(11,2);
+    @Semantics.amount.currencyCode : 'zashopcart_###.currency'
+    total_price           : abap.curr(11,2);
+    currency              : abap.cuky;
+    order_quantity        : abap.numc(4);
+    delivery_date         : abap.dats;
+    overall_status        : abap.char(30);
+    notes                 : abap.string(256);
+    created_by            : abp_creation_user;
+    created_at            : abp_creation_tstmpl;
+    last_changed_by       : abp_lastchange_user;
+    last_changed_at       : abp_lastchange_tstmpl;
+    local_last_changed_at : abp_locinst_lastchange_tstmpl;
+    purchase_requisition  : abap.char(10);
+    pr_creation_date      : abap.dats;
+    }
+    ```
 
-2. The **Open Folder** dialog is opened at the center of the SAP Business Application Studio window. First, select the **projects** entry.
+   6. Save and activate.
 
-    <!-- border -->![open folder dialog](BAS-Open-Workspace-1_1-.png)
 
-3. Then select the **`FioriDemo`** project within the **projects** folder, and click **OK**.
+### Generate transactional UI services
 
-    <!-- border -->![open workspace dialog](BAS-Open-Workspace-2-1-.png)
 
-4. SAP Business Application Studio reloads with the `FioriDemo` project open in its workspace. In the Explorer view you can see the `FioriDemo` project, its folder structure, and files.
+  1. Right-click your database table `ZASHOPCART_###` and select **Generate ABAP Repository Objects**.
 
-    <!-- border -->![open workspace dialog](BAS-Open-Workspace-3-.png)
+      ![cds](generator.png)
 
+  2. Create new **ABAP repository object**:
+     - Generator: **ABAP RESTful Application Programming Model: UI Service**
 
-### Generate an app based on the SAP Fiori Basic template
+      ![cds](generator2.png)
 
+       Click **Next >**.
 
-1. In the **Get Started** tab click **Start from template**.
+       >Please be aware that the screenshot above pertains to the SAP S/4HANA 2022 release. In the SAP S/4HANA 2023 release the wizard looks slightly different: you will first select the **Generator** and in the following wizard page you will see the Package information.
 
-    <!-- border -->![launch generate app](BAS-Generate-App-1-1-.png)
+  3. Maintain the required information on the **Configure Generator** dialog to provide the name of your data model and generate them.         
+     
+     For that, navigate through the wizard tree **(Business Objects, Data Model, etc...)**, maintain the artefact names provided in the table below, and press **Next >**.
 
-    >If the **Get Started** Page does not appear, in the left side bar, select **the hamburger icon | Help | Get Started**.
+     Verify the maintained entries and press **Next >** to confirm. The needed artifacts will be generated.
 
-    ><!-- border -->![Welcome Page from help menu](BAS-Welcome-Page-from-Help-Menu-.png)
+     **Please note**: Error Invalid XML format.   
+     If you receive an error message **Invalid XML format of the response**, this may be due to a bug in version 1.26 of the ADT tools. An update of your ADT plugin to version 1.26.3 will fix this issue.
+
+    | **RAP Layer**                          | **Artefacts**           | **Artefact Names**                                  |
+    |----------------------------------------|-------------------------|-----------------------------------------------------|
+    | **Business Object**                    |                         |                                                     |
+    |                                        | **Data Model**          | Data Definition Name: **`ZR_SHOPCARTTP_###`**     |
+    |                                        |                         | Alias Name: **`ShoppingCart`**                        |  
+    |                                        | **Behavior**            | Implementation Class: **`ZBP_SHOPCARTTP_###`**    |
+    |                                        |                         | Draft Table Name: **`ZDSHOPCART_###`**            |  
+    | **Service Projection (BO Projection)** |                         | Name: **`ZC_SHOPCARTTP_###`**                     |
+    | **Business Services**                  |                         |                                                     |
+    |                                        | **Service Definition**  | Name: **`ZUI_SHOPCART_###`**                      |
+    |                                        | **Service Binding**     | Name: **`ZUI_SHOPCART_O4_###`**                   |
+    |                                        |                         | Binding Type: **`OData V4 - UI`**                   |
 
-    >The easiest way to develop an SAPUI5 freestyle app from scratch is to create it from a template. To continue developing an existing application, the best practice is to use git source code management and clone the repository.
+    ![cds](generator3.png)                    
 
-    >Using the UI wizard you can at any point click the `Back` button to go back to the previous step, or click the specific wizard step to go back to that step.
+    Click **Next >**.
 
-    > You can also create a project from the terminal using Yeoman (`@sap/fiori` generator).
+  4. Click **Finish**.
 
-2. Select the **SAP Fiori Application** tile, and click **Start**.
+      ![cds](generator4.png)
 
-    <!-- border -->![fiori template group](BAS-Generate-App-2-1-.png)
 
-3. For **Template Selection**, select the following, and click **Next**.
 
-    | Step | Parameter | Value |
-    |:-----|:----------|:------|
-    | A | Application type | **SAP Fiori** |
-    | B | Which `template` do you want to use? | **Basic** tile |
+### Enhance behavior definition of data model
 
-    <!-- border -->![Floorplan Selection](BAS-Generate-App-3-1-.png)
+**Hint:** In case of S/4HANA 2022 `FPS01` and S/4HANA 2023 `FPS00`, strict(1) mode must be used. 
 
-4. For **Data Source and Service Selection**, select the following, and click **Next**.
+**In this tutorial example, a SAP S/4HANA Cloud, ABAP environment system was used. The mode therefore is `strict (2)`.**
+  
+  1. Open your behavior definition **`ZR_SHOPCARTTP_###`** to enhance it. Add the following read-only fields to your behavior definition:
 
-    | Step | Parameter | Value |
-    |:-----|:----------|:------|
-    | A | Data source | **Connect to a system** |
-    | B | System | **`ES5`** |
-    | C | Service | **`ZGWSAMPLE_BASIC (1) - OData V2`** |
+    ```ABAP
+    ,
+    PurchaseRequisition,
+    PrCreationDate,
+    DeliveryDate;
+    ```
 
-    <!-- border -->![Data Source and Service Selection](BAS-Generate-App-4-1-.png)
+     ![projection](bdef3x.png)
 
-5. For **Entity Selection > View name**, enter `Suppliers`, and click **Next**.
 
-    <!-- border -->![Entity Selection > View name](BAS-Generate-App-5-1-.png)
+  2. Check your behavior definition:
 
-6. For **Project Attributes**, select the following, and click **Next**.
+    ```ABAP
+    managed implementation in class ZBP_SHOPCARTTP_### unique;
+    strict ( 1 );
+    with draft;
 
-    | Step | Parameter | Value |
-    |:-----|:----------|:------|
-    | A | Module name | **`businesspartners`** |
-    | B | Application title | **Suppliers** |
-    | C | Application namespace | **ns** |
-    | D | Description | **An SAP Fiori app to view a list of suppliers (demo)** |
-    | E | Project folder path | **`/home/user/projects/FioriDemo`** |
-    | F | Minimum SAPUI5 version | (Use the default) |
-    | G | Add deployment configuration | **Yes** (default after setting the project folder path)|
-    | H | Add FLP configuration | **Yes** |
-    | I | Configure advanced options | **No** (default) |
+    define behavior for ZR_SHOPCARTTP_### alias ShoppingCart
+    persistent table zashopcart_###
+    draft table ZDSHOPCART_###
+    etag master LocalLastChangedAt
+    lock master total etag LastChangedAt
+    authorization master( global )
 
-    <!-- border -->![Project Attributes](BAS-Generate-App-6-1-.png)
+    {
+    field ( readonly )
+       OrderUUID,
+       CreatedAt,
+       CreatedBy,
+       LastChangedAt,
+       LastChangedBy,
+       LocalLastChangedAt,
+       PurchaseRequisition,
+       PrCreationDate,
+       DeliveryDate;
 
-7. For **Deployment Configuration**, select the following, and click **Next**.
+    field ( numbering : managed )
+       OrderUUID;
 
-    | Step | Parameter | Value |
-    |:-----|:----------|:------|
-    | A | Please choose the target | **Cloud Foundry** (default) |
-    | B | Destination name | **ES5 - https: //sapes5.sapdevcenter.com** |
 
-    <!-- border -->![deployment configuration](BAS-Generate-App-7-1-.png)
+    create;
+    update;
+    delete;
 
-8. For **Fiori Launchpad Configuration**, select the following, and click **Finish**.
+    draft action Edit;
+    draft action Activate;
+    draft action Discard;
+    draft action Resume;
+    draft determine action Prepare;
 
-    | Step | Parameter | Value |
-    |:-----|:----------|:------|
-    | A | Semantic Object | **Object** |
-    | B | Action | **display** |
-    | B | Title | **Suppliers** |
-    | B | Subtitle (optional) | **Our Suppliers** |
+    mapping for ZASHOPCART_###
+    {
+       OrderUUID = ORDER_UUID;
+       OrderID = ORDER_ID;
+       OrderedItem = ORDERED_ITEM;
+       Price = PRICE;
+       TotalPrice = TOTAL_PRICE;
+       Currency = CURRENCY;
+       OrderQuantity = ORDER_QUANTITY;
+       DeliveryDate = DELIVERY_DATE;
+       OverallStatus = OVERALL_STATUS;
+       Notes = NOTES;
+       CreatedBy = CREATED_BY;
+       CreatedAt = CREATED_AT;
+       LastChangedBy = LAST_CHANGED_BY;
+       LastChangedAt = LAST_CHANGED_AT;
+       LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+       PurchaseRequisition = PURCHASE_REQUISITION;
+       PrCreationDate = PR_CREATION_DATE;
+    }
+    }    
+    ```
 
-    <!-- border -->![launchpad configuration](BAS-Generate-App-8-1-.png)
+   3. Save and activate.  
 
-9. Wait until the installation of project dependencies is completed. A notification that "The project has been generated" appears at the bottom right of the screen, The **Application Information** tab is opened, and the files and project structure in the **Explorer** view are updated.
 
-    <!-- border -->![application generated](BAS-Generate-App-10-1-.png)
+### Publish service binding and run SAP Fiori Elements preview
 
+Choose between the tabs **Cloud** and **On-premise** and follow the publishing process.
 
+  [OPTION BEGIN [Cloud]] 
 
+  1. Open your service binding **`ZUI_SHOPCART_O4_###`** and click **Publish**.
 
-### Run the App Locally in the Dev Space
+     ![binding](generator5.png)
 
+  2. Select **`ShoppingCart`** in your service binding and click **Preview** to open SAP Fiori Elements preview.
 
-1.	Click the **Run Configurations** view button to open the `Run Configurations` view. A set of run configuration that were created as part of the app generation are presented.
+     ![preview](generator6.png)
 
-    <!-- border -->![local run](BAS-Local-Run-1-1-.png)
+  [OPTION END]
 
-2.	Click the **Play** icon of the **`Start businesspartners`** run configuration to run the app locally in the dev space.
+  [OPTION BEGIN [On-premise]] 
 
-    <!-- border -->![local run](BAS-Local-Run-2-1-.png)
+  1. Login to **SAP NetWeaver** and execute `/n/IWFND/V4_ADMIN` `t-code`.
 
-    >You may be prompted to allow pop-ups.
+     ![preview](onprem.png)
 
-    >The **Debug** view opens, and the status bar color changes to orange, indicating that a debug session is in progress.
+  2. Click on **Publish Service Groups**.
 
-    >A new tab opens in SAP Business Application Studio where you can see the log of the running app.
+     ![preview](onprem2.png)
 
-    <!-- border -->![local run](BAS-Local-Run-3-1-3-.png)
+  3. Select **System Alias** and click **Get Service Groups**. Select the Service Group **`ZUI_SHOPCART_O4_###`** and click **Publish Service Groups**.
 
-3. A new browser tab opens showing the app. In this stage of the development, the app only shows a title.
+     ![preview](publishnew4.png)
 
-    <!-- border -->![app running locally](AppStudio-Local-Run-3-.png)
+  4. Click **Continue**, you will get the message **New service group(s) successfully published**.
+    
+     ![preview](onprem3.png)
 
+  5. Click the back button to see the published group.
 
+  6. Expand the **Service Groups** and double click on the group.
 
-### Open the layout editor and the code editor
+      ![preview](onpremisepublish.png) 
 
+  7. We can see the available services under this group.
 
-The layout editor allows users to easily make changes in the app using a visual editor. In this tutorial, you will make changes so that data from the backend service is displayed when the app is running.
+  8. To test the service, go back to your service binding, select **`ShoppingCart`** to start the SAP Fiori Elements preview.
 
-1. Click **Toggle Bottom Panel** to free screen space for the editors pane.
+      ![preview](onpremisenew2.png)
 
-    <!-- border -->![toggle bottom pane](BAS-Close-Bottom-Pane-1-.png)
 
-2. Click the **Explorer** view button to open the `Explorer` view.
+     More information [here](https://launchpad.support.sap.com/#/notes/2948977).
 
-    <!-- border -->![open explorer view](BAS-Open-Explorer-View-.png)
+  
+  [OPTION END]
 
-3. Choose **`FioriDemo` > `businesspartners` > `webapp` > `view`** and right-click the `Suppliers.view.xml` file and click **Open with...**
+  
 
-     <!-- border -->![Open with Layout Editor](BAS-Open-Layout-Editor-1-.png)
-
-4. The **Select editor** dialog is opened at the top center of the SAP Business Application Studio window. Select the **Layout Editor** entry.
-
-    <!-- border -->![Open with Layout Editor](BAS-Open-Layout-Editor-1-2-.png)
-
-    >To have the Layout Editor option available after opening the workspace or folder, you may need to wait a bit for the Layout Editor extension to be loaded.
-
-5. The **Suppliers** view is opened in the **Layout Editor**.
-
-    <!-- border -->![open layout editor](BAS-Open-Layout-Editor-2-.png)
-
-6. Open the `Suppliers.view.xml` file with the text editor and see how modifications in the Layout Editor are manifested in the text editor. It is not mandatory to open both editors for development. You can do the development work using either of the editors or both. In this tutorial you'll have both editors open for demo purposes.
-
-    <!-- border -->![Open code editor](BAS-Open-Code-Editor-1-.png)
-
-7. The **Suppliers** view is opened in the text editor in a tab next to the **Layout Editor**.
-
-    <!-- border -->![open code editor](BAS-Open-Code-Editor-2-.png)
-
-8. For convenience, place the code editor below the Layout Editor. Use the drag & drop functionality.
-
-    <!-- border -->![drag-drop editor](BAS-Drag-Drop-Code-Editor-1-.png)
-
-    >The **Layout Editor** and code editor are stacked so you can see how making changes to one will be reflected on the other.
-
-    ><!-- border -->![drag-drop editor](BAS-Drag-Drop-Code-Editor-2-.png)
-
-
-
-### Make changes to the UI
-
-
-1. Edit your app using the layout editor, with no need to do any coding.
-
-    >Tip 1: Since auto save is enabled by default, every change to a file triggers the live reload of the app. If you place the browser where the app is running and the browser where SAP Business Application Studio is running side by side, you'll be able to see how code changes trigger the app's live reload.
-
-    >Tip 2: To trigger live reload only when you save a file, in the menu bar, select **File | Auto Save** to toggle auto save from enable (default) to disable. A 'V' next to auto save indicates that  auto save is enabled.
-
-2. In the **Controls** pane, enter `List` to filter the controls list in the search box.
-
-    <!-- border -->![Filter List control](BAS-Enhance-App-1-.png)
-
-    >In order to get more screen real-estate, click the **Explorer** view button to close the `Explorer` view, and adjust the ratio between the Layout Editor and the code editor.
-
-
-3. Drag the **List** control and drop it on the **View** control in the canvas.
-
-    <!-- border -->![Drag and drop](BAS-Enhance-App-2-.png)
-
-    >Adding the list control to the view is reflected in both the **Layout Editor** and the code editor.
-
-    ><!-- border -->![Link text e.g., Destination screen](BAS-Enhance-App-2-2-.png)
-
-4. Select the **Standard List Item** control by clicking the **List** control you just added (the breadcrumb indicates which control is selected) and, in the **Entity Set** property in the **Properties** pane, click the Bind icon.
-
-    <!-- border -->![Open entity set bind window](BAS-Enhance-App-3-.png)
-
-    >The **Select Entity Set** view is displayed.
-
-5. Select the **Define entity set and set the selected control as template** option, and in the **Entity Set** dropdown list, choose the `BusinessPartnerSet` entity set. Click **Bind** to complete the operation.
-
-    <!-- border -->![entity set bind window](BAS-Enhance-App-4-.png)
-
-    >The space of the **Select Entity Set** view may be too narrow to show all options. In case you do not see the **Define entity set and set the selected control as template** option, scroll down in the **Select Entity Set** view to make it available.
-
-    >The bind operation is reflected in both the **Layout Editor** and the code editor.
-
-    ><!-- border -->![entity set bind window](BAS-Enhance-App-5-.png)
-
-6. In the **Properties** pane, in the **Title** property, click the **Bind** icon.
-
-    <!-- border -->![open Title bind window](BAS-Enhance-App-5-2-.png)
-
-    >The **Data Binding** view is displayed.
-
-7. Click the **Clear expression** (eraser) icon to clear the default text, and in the data fields double click  `CompanyName`. Click **Bind** to complete the operation.
-
-    <!-- border -->![Title bound](BAS-Enhance-App-6-.png)
-
-8. Repeat the last two steps for the **Description** property in the **Properties** pane. Choose  `WebAddress`.
-
-    <!-- border -->![Bind Description](BAS-Enhance-App-8-.png)
-
-9. Wait for the live reload of the app to complete. A list of suppliers is displayed.
-
-    <!-- border -->![Bind Description](AppStudio-Change-UI-9-.png)
-
-
-
----
-
-Congratulations!
-
-With this, you have successfully completed the development of an SAP Fiori app using SAP Business Application Studio, including test-running the app locally in the dev space. In this tutorial, you learned about high productivity tools that are available out-of-the-box in SAP Business Applications Studio, such as: templates and wizards, command palette, Layout Editor, local run (Preview Application), and more.
+### Test yourself
